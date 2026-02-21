@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K2 Střechy</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  margin:0;
+  background:#fff;
+  color:#111;
+  text-align:center;
+  overflow-x:hidden;
+}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0;
+  width:100%;
+  background:rgba(0,0,0,0.85);
+  z-index:1000;
+}
+nav ul{
+  list-style:none;
+  display:flex;
+  justify-content:center;
+  margin:0;
+  padding:0;
+}
+nav ul li a{
+  color:#fff;
+  padding:15px 25px;
+  display:block;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+/* HORNÍ BANNER – zmenšený */
+header{
+  height:33vh; 
+  min-height:200px;
+  background:url('https://i.imgur.com/akYhOlM.jpeg') center/cover no-repeat;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  color:#fff;
+}
+header h1{
+  font-size:28px;
+  font-weight:900;
+  text-shadow:2px 2px 8px rgba(0,0,0,0.7);
+  max-width:90%;
+}
+header img{
+  position:absolute;
+  right:20px;
+  top:20px;
+  max-height:160px; 
+}
+
+/* CIRCLE PORTFOLIO – bílé pozadí */
+.circle-background{
+  width:100%;
+  background:#fff;
+  padding:80px 0;
+}
+
+/* CIRCLE PORTFOLIO */
+.circle-container{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:90px;
+  position:relative;
+  z-index:2;
+}
+
+.circle{
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  background-size:cover;
+  background-position:center;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  transition:0.5s ease;
+  box-shadow:0 20px 50px rgba(0,0,0,0.35);
+}
+
+.circle:hover{
+  transform:scale(1.08);
+}
+
+.circle.open{
+  transform:scale(1.25);
+  z-index:5;
+}
+
+.circle-title{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  padding:16px;
+  background:rgba(0,0,0,0.6);
+  color:#fff;
+  font-weight:bold;
+  backdrop-filter:blur(6px);
+}
+
+.circle-gallery{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  padding:25px;
+  opacity:0;
+  visibility:hidden;
+  transition:0.4s ease;
+}
+
+.circle.open .circle-gallery{
+  opacity:1;
+  visibility:visible;
+}
+
+.circle-gallery img{
+  width:90px;
+  height:90px;
+  object-fit:cover;
+  border-radius:12px;
+  transition:0.3s;
+  cursor:pointer;
+}
+
+.circle-gallery img:hover{
+  transform:scale(1.2);
+}
+
+/* STŘEDNÍ BANNER – pod kruhy, 1/3 výšky */
+.highlight-banner{
+  width:100vw; 
+  margin-left:calc(-50vw + 50%); 
+  height:33vh; 
+  background:url('https://i.imgur.com/WmBbm3V.jpeg') center/cover no-repeat;
+  position:relative;
+  color:#fff;
+  overflow:hidden;
+
+  opacity:0;
+  transform:translateY(20px);
+  animation:fadeUp 1.2s ease forwards;
+  animation-delay:0.4s;
+}
+
+.highlight-banner::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+}
+
+.highlight-content{
+  position:relative;
+  z-index:2;
+  max-width:900px;
+  margin:0 auto;
+  color:#fff;
+}
+
+.highlight-content h2{
+  font-size:32px;
+  margin-bottom:20px;
+  font-weight:900;
+}
+
+.highlight-content p{
+  font-size:18px;
+  line-height:1.6;
+}
+
+/* ANIMACE */
+@keyframes fadeUp{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* CONTACT */
+.contact{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:rgba(255,255,255,0.98);
+  padding:25px 30px;
+  border-radius:16px;
+  text-align:right;
+  box-shadow:0 10px 25px rgba(0,0,0,0.35);
+  font-weight:bold;
+  font-size:16px;
+}
+.contact i{
+  margin-right:8px;
+  color:#ff6600;
+}
+.contact a{
+  color:#111;
+  text-decoration:none;
+}
+
+/* LIGHTBOX */
+#lightbox{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+#lightbox img{
+  max-width:90%;
+  max-height:90%;
+  border-radius:12px;
+}
+#lightbox span{
+  position:absolute;
+  top:20px;
+  right:30px;
+  font-size:50px;
+  color:#fff;
+  cursor:pointer;
+}
+#lightbox .nav{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:50px;
+  color:#fff;
+  cursor:pointer;
+  user-select:none;
+}
+#lightbox .prev{left:30px;}
+#lightbox .next{right:30px;}
+
+/* MOBILE */
+@media(max-width:768px){
+  .circle{width:230px;height:230px;}
+  .circle-gallery img{width:70px;height:70px;}
+  header h1{font-size:22px;}
+  .highlight-content h2{font-size:24px;}
+  .contact{font-size:14px;padding:20px;}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<ul>
+<li><a href="#top">K2 Střechy</a></li>
+<li><a href="#reference">Reference</a></li>
+</ul>
+</nav>
+
+<header id="top">
+<h1>Kvalitní střechy, na které se můžete spolehnout</h1>
+<img src="https://i.imgur.com/nARlklA.png" alt="logo">
+</header>
+
+<div class="circle-background">
+  <div id="reference" class="circle-container"></div>
+</div>
+
+<section class="highlight-banner">
+  <div class="highlight-content">
+     <h2>Profesionální realizace střech na klíč</h2>
+    <p><strong>Jsme nová, dynamická firma specializující se na realizaci střech a vše, co s nimi souvisí.<br>
+    I když jsme na trhu krátce, stavíme na poctivé práci, osobním přístupu a důrazu na detail. Každá střecha je pro nás závazek.</p>
+    <p>Nabízíme kompletní služby od pokládky nových střech přes rekonstrukce, opravy, klempířské práce až po montáž okapů, střešních oken a dalších doplňků. Pracujeme s kvalitními materiály a moderními postupy, abychom vám zajistili dlouhou životnost a maximální spolehlivost.</p>
+    <p>Zakládáme si na férovém jednání, dodržování termínů a precizním provedení každé zakázky – malé i velké.<br>
+    Vaše střecha je naše vizitka.</strong></p>
+  </div>
+</section>
+
+<div id="contact" class="contact">
+<p><i class="fas fa-home"></i>K2 Střechy</p>
+<p><i class="fas fa-user"></i>Lukáš Kult</p>
+<p><i class="fas fa-envelope"></i>Email: <a href="mailto:K2strechy@seznam.cz">K2strechy@seznam.cz</a></p>
+<p><i class="fas fa-phone"></i>Tel: <a href="tel:+420704247780">+420 704 247 780</a></p>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <span onclick="closeLightbox()">&times;</span>
+  <span class="nav prev" onclick="prevImage()">&#10094;</span>
+  <span class="nav next" onclick="nextImage()">&#10095;</span>
+  <img id="lightbox-img">
+</div>
+
+<script>
+const galleries={
+ploche:{title:"Ploché střechy",images:[
+'https://i.imgur.com/SjIuIJK.jpeg',
+'https://i.imgur.com/6NV74I8.jpeg']},
+sikme:{title:"Šikmé střechy",images:[
+'https://www.nejremeslnici.cz/assets/attachments2/83804/screen/novostavba-rd_ref_stav_RD_Jiloviste_big.jpg?1547738192']},
+klempirske:{title:"Klempířské práce",images:[
+'https://i.imgur.com/SjIuIJK.jpeg']},
+servis:{title:"Údržba a servis",images:[
+'https://i.imgur.com/6NV74I8.jpeg']}
+};
+
+const container=document.getElementById("reference");
+let currentGallery=[], currentIndex=0;
+
+for(let key in galleries){
+  const data=galleries[key];
+  const circle=document.createElement("div");
+  circle.className="circle";
+  circle.style.backgroundImage=`url(${data.images[0]})`;
+
+  const title=document.createElement("div");
+  title.className="circle-title";
+  title.innerText=data.title;
+
+  const gallery=document.createElement("div");
+  gallery.className="circle-gallery";
+
+  data.images.forEach((src,i)=>{
+    const img=document.createElement("img");
+    img.src=src;
+    img.onclick=(e)=>{
+      e.stopPropagation();
+      currentGallery=data.images;
+      currentIndex=i;
+      openLightbox(src);
+    };
+    gallery.appendChild(img);
+  });
+
+  circle.appendChild(title);
+  circle.appendChild(gallery);
+
+  circle.addEventListener("click",()=>{
+    document.querySelectorAll(".circle").forEach(c=>{
+      if(c!==circle)c.classList.remove("open");
+    });
+    circle.classList.toggle("open");
+  });
+
+  container.appendChild(circle);
+}
+
+function openLightbox(src){
+  document.getElementById("lightbox-img").src=src;
+  document.getElementById("lightbox").style.display="flex";
+}
+
+function closeLightbox(){
+  document.getElementById("lightbox").style.display="none";
+}
+
+function prevImage(){
+  currentIndex = (currentIndex-1+currentGallery.length) % currentGallery.length;
+  document.getElementById("lightbox-img").src = currentGallery[currentIndex];
+}
+function nextImage(){
+  currentIndex = (currentIndex+1) % currentGallery.length;
+  document.getElementById("lightbox-img").src = currentGallery[currentIndex];
+}
+</script>
+
+</body>
+</html>
