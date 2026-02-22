@@ -281,11 +281,33 @@ footer .footer-text a{
 footer .footer-text a:hover{color:#06f;}
 footer .footer-logo img{height:140px;}
 
-/* RESPONSIVE */
+/* RESPONSIVE - doplněno */
+@media(max-width:1100px){
+    header h1 {font-size:38px;}
+    header p {font-size:18px;}
+    .intro-text h2 {font-size:30px;}
+    .section-text h2 {font-size:28px;}
+}
+
 @media(max-width:900px){
     .intro-section, .about-section{flex-direction:column;padding:40px 20px;}
     .section-bubble{justify-content:center;}
     .circle{width:180px;height:180px;}
+    header{padding:0 20px; min-height:450px;}
+    .header-content h1{font-size:32px;}
+    .header-content p{font-size:16px;}
+}
+
+@media(max-width:600px){
+    .nav-top .nav-container, .nav-menu .nav-container{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+    .intro-text p, .section-text p, .section-text ul{font-size:14px;}
+    .circle{width:150px;height:150px;}
+    header h1{font-size:26px;}
+    header p{font-size:14px;}
 }
 </style>
 </head>
@@ -551,6 +573,41 @@ lightbox.addEventListener("touchend", e=>{
     if(endX < startX - 50) nextImage();
     if(endX > startX + 50) prevImage();
 });
+document.querySelectorAll(".nav-menu a").forEach(link => {
+    link.addEventListener("click", e => {
+        e.preventDefault(); // zabrání defaultnímu chování odkazu
+        const text = link.textContent.trim();
+
+        let targetId = "";
+        switch(text){
+            case "Klempířské práce":
+                targetId = "bubble-klempirske";
+                break;
+            case "Pokrývačské a tesařské práce":
+                targetId = "bubble-pokryvac";
+                break;
+            case "Izolaterské práce":
+                targetId = "bubble-izolate";
+                break;
+            case "Údržba a servis":
+                targetId = "bubble-servis";
+                break;
+            default:
+                return;
+        }
+
+        const target = document.getElementById(targetId);
+        if(target){
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    });
+});
+window.addEventListener('resize', () => {
+    if(lightbox.style.display === "flex"){
+        lightboxImg.style.maxWidth = window.innerWidth * 0.9 + "px";
+        lightboxImg.style.maxHeight = window.innerHeight * 0.9 + "px";
+    }
+});
 </script>
 </body>
-</html>
+</html> 	
